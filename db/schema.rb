@@ -10,75 +10,85 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170505151447) do
+ActiveRecord::Schema.define(version: 20170507195539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "albums", force: :cascade do |t|
-    t.bigint "user_id"
-    t.string "title"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_albums_on_user_id"
+    t.integer  "user_id"
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["user_id"], name: "index_albums_on_user_id", using: :btree
   end
 
   create_table "albums_tags", id: false, force: :cascade do |t|
-    t.bigint "album_id", null: false
-    t.bigint "tag_id", null: false
-    t.index ["album_id"], name: "index_albums_tags_on_album_id"
-    t.index ["tag_id"], name: "index_albums_tags_on_tag_id"
+    t.integer "album_id", null: false
+    t.integer "tag_id",   null: false
+    t.index ["album_id"], name: "index_albums_tags_on_album_id", using: :btree
+    t.index ["tag_id"], name: "index_albums_tags_on_tag_id", using: :btree
   end
 
   create_table "comments", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "photo_id"
-    t.text "text"
+    t.integer  "user_id"
+    t.integer  "photo_id"
+    t.text     "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["photo_id"], name: "index_comments_on_photo_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
+    t.index ["photo_id"], name: "index_comments_on_photo_id", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
   create_table "photos", force: :cascade do |t|
-    t.text "description"
-    t.string "url"
-    t.bigint "album_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["album_id"], name: "index_photos_on_album_id"
+    t.text     "description"
+    t.string   "url"
+    t.integer  "album_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["album_id"], name: "index_photos_on_album_id", using: :btree
   end
 
   create_table "photos_tags", id: false, force: :cascade do |t|
-    t.bigint "photo_id", null: false
-    t.bigint "tag_id", null: false
-    t.index ["photo_id"], name: "index_photos_tags_on_photo_id"
-    t.index ["tag_id"], name: "index_photos_tags_on_tag_id"
+    t.integer "photo_id", null: false
+    t.integer "tag_id",   null: false
+    t.index ["photo_id"], name: "index_photos_tags_on_photo_id", using: :btree
+    t.index ["tag_id"], name: "index_photos_tags_on_tag_id", using: :btree
   end
 
   create_table "subscriptions", force: :cascade do |t|
-    t.bigint "from_user_id"
-    t.bigint "to_user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["from_user_id"], name: "index_subscriptions_on_from_user_id"
-    t.index ["to_user_id"], name: "index_subscriptions_on_to_user_id"
+    t.integer  "from_user_id"
+    t.integer  "to_user_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["from_user_id"], name: "index_subscriptions_on_from_user_id", using: :btree
+    t.index ["to_user_id"], name: "index_subscriptions_on_to_user_id", using: :btree
   end
 
   create_table "tags", force: :cascade do |t|
-    t.string "name"
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.string "email"
-    t.string "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "address"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
   add_foreign_key "albums", "users"

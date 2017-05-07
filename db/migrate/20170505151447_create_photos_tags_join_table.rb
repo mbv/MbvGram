@@ -1,4 +1,4 @@
-class CreatePhotosTagsJoinTable < ActiveRecord::Migration[5.1]
+class CreatePhotosTagsJoinTable < ActiveRecord::Migration[5.0]
   def change
     create_join_table :photos, :tags do |t|
       t.index :photo_id
