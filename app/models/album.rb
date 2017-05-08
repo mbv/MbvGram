@@ -1,5 +1,6 @@
 class Album < ApplicationRecord
   belongs_to :user
-  has_and_belongs_to_many :tags, uniq: true
+  has_many :taggings, as: :taggable
+  has_many :tags, through: :taggings
   has_many :photos
 end

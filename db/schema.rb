@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170508080428) do
+ActiveRecord::Schema.define(version: 20170508142419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,13 +22,6 @@ ActiveRecord::Schema.define(version: 20170508080428) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["user_id"], name: "index_albums_on_user_id", using: :btree
-  end
-
-  create_table "albums_tags", id: false, force: :cascade do |t|
-    t.integer "album_id", null: false
-    t.integer "tag_id",   null: false
-    t.index ["album_id"], name: "index_albums_tags_on_album_id", using: :btree
-    t.index ["tag_id"], name: "index_albums_tags_on_tag_id", using: :btree
   end
 
   create_table "comments", force: :cascade do |t|
@@ -50,20 +43,22 @@ ActiveRecord::Schema.define(version: 20170508080428) do
     t.index ["album_id"], name: "index_photos_on_album_id", using: :btree
   end
 
-  create_table "photos_tags", id: false, force: :cascade do |t|
-    t.integer "photo_id", null: false
-    t.integer "tag_id",   null: false
-    t.index ["photo_id"], name: "index_photos_tags_on_photo_id", using: :btree
-    t.index ["tag_id"], name: "index_photos_tags_on_tag_id", using: :btree
+  create_table "relationships", force: :cascade do |t|
+    t.integer  "follower_id"
+    t.integer  "followed_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
+    t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
+    t.index ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
   end
 
-  create_table "subscriptions", force: :cascade do |t|
-    t.integer  "from_user_id"
-    t.integer  "to_user_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.index ["from_user_id"], name: "index_subscriptions_on_from_user_id", using: :btree
-    t.index ["to_user_id"], name: "index_subscriptions_on_to_user_id", using: :btree
+  create_table "taggings", force: :cascade do |t|
+    t.integer "tag_id"
+    t.string  "taggable_type"
+    t.integer "taggable_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
+    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id", using: :btree
   end
 
   create_table "tags", force: :cascade do |t|
@@ -101,4 +96,5 @@ ActiveRecord::Schema.define(version: 20170508080428) do
   add_foreign_key "comments", "photos"
   add_foreign_key "comments", "users"
   add_foreign_key "photos", "albums"
+  add_foreign_key "taggings", "tags"
 end
