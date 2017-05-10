@@ -13,7 +13,8 @@ class AlbumsController < ApplicationController
   end
 
   def create
-    @album = Album.new(album_params)
+    @album = Album.create(album_params)
+    current_user.albums << @album
 
     if @album.save
       render json: @album, status: :created, location: @album
@@ -40,6 +41,6 @@ class AlbumsController < ApplicationController
   end
 
   def album_params
-    params.require(:album).permit!
+    params.require(:album).permit(:title, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids)
   end
 end
