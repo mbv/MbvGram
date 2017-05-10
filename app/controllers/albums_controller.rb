@@ -41,6 +41,6 @@ class AlbumsController < ApplicationController
   end
 
   def album_params
-    params.require(:album).permit(:title, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids)
+    params.permit(:title, :description, tag_ids: [])
   end
 end
