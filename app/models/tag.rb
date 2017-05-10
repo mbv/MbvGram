@@ -1,4 +1,8 @@
 class Tag < ApplicationRecord
-  has_and_belongs_to_many :albums, uniq: true
-  has_and_belongs_to_many :photos, uniq: true
+  has_many :albums, through:  :taggings,
+                    source: :taggable,
+                    source_type: 'Album'
+  has_many :photos, through:  :taggings,
+                    source: :taggable,
+                    source_type: 'Photo'
 end
