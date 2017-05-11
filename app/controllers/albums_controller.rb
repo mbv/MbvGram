@@ -3,7 +3,7 @@ class AlbumsController < ApplicationController
   before_action :set_album, only: [:show, :update, :destroy]
 
   def index
-    @albums = current_user.albums
+    @albums = current_user.albums.includes([:taggings, :tags])
     render json: @albums
   end
 
