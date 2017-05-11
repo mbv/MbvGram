@@ -32,6 +32,7 @@ gem 'rack-cors'
 gem 'devise_token_auth'
 
 gem 'cancancan', '~> 1.10'
+gem 'carrierwave', '~> 1.0'
 
 
 # Use Capistrano for deployment

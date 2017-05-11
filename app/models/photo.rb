@@ -3,7 +3,20 @@ class Photo < ApplicationRecord
   has_many :taggings, as: :taggable
   has_many :tags, through: :taggings
   has_many :comments
+
+  mount_uploader :url, PhotoUploader
+
   validate :photo_count_within_limit, on: :create
+
+  def tag_list
+    tags.map(&:name)
+  end
+
+  def tag_list=(tag_names)
+    self.tags = tag_names.map do |tag_name|
+      Tag.where(name: tag_name).first_or_create!
+    end
+  end
 
   def photo_count_within_limit
     if album.photos(:reload).count >= 50

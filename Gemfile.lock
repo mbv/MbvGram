@@ -54,6 +54,10 @@ GEM
       uniform_notifier (~> 1.10.0)
     byebug (9.0.6)
     cancancan (1.16.0)
+    carrierwave (1.1.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
     case_transform (0.2)
       activesupport
     concurrent-ruby (1.0.5)
@@ -181,6 +185,7 @@ DEPENDENCIES
   bullet
   byebug
   cancancan (~> 1.10)
+  carrierwave (~> 1.0)
   devise
   devise_token_auth
   jbuilder (~> 2.5)
