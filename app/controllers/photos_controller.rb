@@ -17,7 +17,7 @@ class PhotosController < ApplicationController
     Album.find(params[:album_id]).photos << @photo
 
     if @photo.save
-      render json: @photo, status: :created, location: @photo
+      render json: @photo, status: :created, location: [@photo.album, @photo]
     else
       render json: @photo.errors, status: :unprocessable_entity
     end
@@ -41,6 +41,6 @@ class PhotosController < ApplicationController
   end
 
   def photo_params
-    params.permit(:url, :album_id, :description, tag_list: [])
+    params.permit(:file, :album_id, :description, tag_list: [])
   end
 end

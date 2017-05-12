@@ -4,7 +4,7 @@ class Photo < ApplicationRecord
   has_many :tags, through: :taggings
   has_many :comments
 
-  mount_uploader :url, PhotoUploader
+  mount_uploader :file, PhotoUploader
 
   validate :photo_count_within_limit, on: :create
 
