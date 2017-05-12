@@ -3,7 +3,7 @@ class PhotosController < ApplicationController
   before_action :set_photo, only: [:show, :update, :destroy]
 
   def index
-    @photos = Album.find(params[:photo_id]).photos.includes([:taggings, :tags])
+    @photos = Album.find(params[:album_id]).photos.includes([:taggings, :tags])
     render json: @photos
   end
 
@@ -41,6 +41,6 @@ class PhotosController < ApplicationController
   end
 
   def photo_params
-    params.permit(:file, :album_id, :description, tag_list: [])
+    params.permit(:file, :album_id, :description, :tag_list)
   end
 end

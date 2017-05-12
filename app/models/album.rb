@@ -3,6 +3,7 @@ class Album < ApplicationRecord
   has_many :taggings, as: :taggable
   has_many :tags, through: :taggings
   has_many :photos
+  validates :title, length: { minimum: 2 }
 
   def tag_list
     tags.map(&:name)

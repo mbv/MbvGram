@@ -13,7 +13,7 @@ class Photo < ApplicationRecord
   end
 
   def tag_list=(tag_names)
-    self.tags = tag_names.map do |tag_name|
+    self.tags = tag_names.split(',').map do |tag_name|
       Tag.where(name: tag_name).first_or_create!
     end
   end

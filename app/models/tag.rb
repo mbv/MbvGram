@@ -5,4 +5,6 @@ class Tag < ApplicationRecord
   has_many :photos, through:  :taggings,
                     source: :taggable,
                     source_type: 'Photo'
+
+  validates :name, length: { minimum: 2 }
 end
