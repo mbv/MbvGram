@@ -3,9 +3,13 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'home#index'
   resources :albums do
-    resources :photos
+    resources :photos do
+      resources :comments
+    end
   end
   resources :tags, except: [:update, :show]
+
+  get '/photos/:id', to: 'photos#show'
 
   mount ActionCable.server => '/cable'
 end
