@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
-         :recoverable , :rememberable, :validatable,
+         :recoverable, :rememberable, :validatable,
          :confirmable, :omniauthable
   include DeviseTokenAuth::Concerns::User
 
@@ -16,4 +16,16 @@ class User < ApplicationRecord
                                    dependent: :destroy
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+
+  delegate :can?, :cannot?, :to => :ability
+
+  ROLES = [:admin, :user].freeze
+
+  def ability
+    @ability ||= Ability.new(self)
+  end
+
+  def is?(requested_role)
+    role == requested_role.to_s
+  end
 end
