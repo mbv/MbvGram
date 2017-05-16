@@ -39,6 +39,9 @@ gem 'mini_magick'
 gem 'activeadmin'
 
 
+gem 'mysql2',          '~> 0.3.21'
+gem 'thinking-sphinx', '~> 3.3.0'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
