@@ -10,7 +10,7 @@ module Api
 
     # GET /photos/1
     def show
-      render json: @photo
+      respond_with resource
     end
 
     def create
@@ -18,14 +18,14 @@ module Api
       Album.find(params[:album_id]).photos << @photo
 
       if @photo.save
-        render json: @photo, status: :created, location: [@photo.album, @photo]
+        render json: @photo, status: :created, location: [:api, @photo.album, @photo]
       else
         render json: @photo.errors, status: :unprocessable_entity
       end
     end
 
     def update
-      if @photo.update(photo_params)
+      if resource.update(photo_params)
         render json: @photo
       else
         render json: @photo.errors, status: :unprocessable_entity
@@ -37,6 +37,11 @@ module Api
     end
 
     private
+
+    def resource
+      @_resource ||= Photo.find(params[:id])
+    end
+
     def set_photo
       @photo = Photo.find(params[:id])
     end

@@ -1,5 +1,6 @@
 module Api
   class ApiController < ApplicationController
+    respond_to :json
     include DeviseTokenAuth::Concerns::SetUserByToken
     before_action :configure_permitted_parameters, if: :devise_controller?
 

@@ -1,7 +1,9 @@
 class CommentRelayJob < ApplicationJob
   def perform(comment)
-    ActionCable.server.broadcast "photos:#{comment.photo.album.user_id}:comments",
-                                 comment: comment,
-                                 user:    comment.user
+    if comment.photo.album.user_id != comment.user_id
+      ActionCable.server.broadcast "photos:#{comment.photo.album.user_id}:comments",
+                                   comment: comment,
+                                   user:    comment.user
+    end
   end
 end

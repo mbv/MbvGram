@@ -42,6 +42,11 @@ gem 'activeadmin'
 gem 'mysql2',          '~> 0.3.21'
 gem 'thinking-sphinx', '~> 3.3.0'
 
+gem 'dry-core'
+gem 'dry-validation'
+
+gem 'responders'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

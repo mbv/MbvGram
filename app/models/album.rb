@@ -9,9 +9,9 @@ class Album < ApplicationRecord
     tags.map(&:name)
   end
 
-  def tag_list=(tag_names)
-    self.tags = tag_names.map do |tag_name|
-      Tag.where(name: tag_name).first_or_create!
+  def tag_list=(tags)
+    self.tags = tags.map do |tag|
+      Tag.where(name: tag['name']).first_or_create!
     end
   end
 end
