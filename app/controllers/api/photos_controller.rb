@@ -1,11 +1,9 @@
 module Api
   class PhotosController < ApiController
     before_action :authenticate_user!
-    before_action :set_photo, only: [:show, :update, :destroy]
 
     def index
-      @photos = Album.find(params[:album_id]).photos.includes([:taggings, :tags])
-      render json: @photos
+      respond_with Album.find(params[:album_id]).photos.includes([:taggings, :tags])
     end
 
     # GET /photos/1
@@ -14,14 +12,8 @@ module Api
     end
 
     def create
-      @photo = Photo.create(photo_params)
-      Album.find(params[:album_id]).photos << @photo
+      respond_with :api, CreatePhotoOperation.new.get(params, current_user)
 
-      if @photo.save
-        render json: @photo, status: :created, location: [:api, @photo.album, @photo]
-      else
-        render json: @photo.errors, status: :unprocessable_entity
-      end
     end
 
     def update
@@ -33,21 +25,13 @@ module Api
     end
 
     def destroy
-      @photo.destroy
+      resource.destroy
     end
 
     private
 
     def resource
       @_resource ||= Photo.find(params[:id])
-    end
-
-    def set_photo
-      @photo = Photo.find(params[:id])
-    end
-
-    def photo_params
-      params.permit(:file, :album_id, :description, :tag_list)
     end
   end
 end

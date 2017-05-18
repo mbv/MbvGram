@@ -43,6 +43,11 @@ gem 'mysql2',          '~> 0.3.21'
 gem 'thinking-sphinx', '~> 3.3.0'
 
 gem 'dry-core'
+
+gem 'dry-container'
+gem 'dry-monads'
+gem 'dry-transaction'
+gem 'dry-types'
 gem 'dry-validation'
 
 gem 'responders'
