@@ -3,26 +3,23 @@ module Api
     before_action :authenticate_user!
 
     def index
-      @tags = Tag.all
-      render json: @tags
+      respond_with Tag.all
     end
 
     def create
-      @tag = Tag.new(tag_params)
-
-      if @tag.save
-        render json: @tag, status: :created, location: @tag
-      else
-        render json: @tag.errors, status: :unprocessable_entity
-      end
+      respond_with Tag.create(tag_params)
     end
 
     def destroy
-      @tag = Tag.find(params[:id])
-      @tag.destroy
+      resource.destroy
     end
 
     private
+
+    def resource
+      @_resource ||= Photo.find(params[:id])
+    end
+
     def tag_params
       params.require(:tag).permit!
     end

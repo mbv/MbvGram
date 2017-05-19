@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
       get '/photos/:id', to: 'photos#show'
 
+      get '/search/:text', to: 'search#index'
+
       mount ActionCable.server => '/cable'
     end
   end

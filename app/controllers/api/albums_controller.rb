@@ -28,7 +28,7 @@ module Api
     private
 
     def resource
-      @_resource ||= current_user.albums.find(params[:id])
+      @_resource ||= Album.find(params[:id])
     end
   end
 end
