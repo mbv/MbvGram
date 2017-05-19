@@ -12,16 +12,16 @@ module Api
     end
 
     def create
-      respond_with :api, CreatePhotoOperation.new.get(params, current_user)
+      photo = CreatePhotoOperation.new.get(params, current_user)
+      album = Album.new
+      respond_with :api, album, photo
 
     end
 
     def update
-      if resource.update(photo_params)
-        render json: @photo
-      else
-        render json: @photo.errors, status: :unprocessable_entity
-      end
+      photo = UpdatePhotoOperation.new.get(params, current_user)
+      album = Album.new
+      respond_with :api, album, photo
     end
 
     def destroy
