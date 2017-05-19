@@ -3,7 +3,7 @@ module Api
     before_action :authenticate_user!
 
     def index
-      respond_with Album.find(params[:album_id]).photos.includes([:taggings, :tags])
+      respond_with album.photos.includes([:taggings, :tags])
     end
 
     # GET /photos/1
@@ -13,14 +13,12 @@ module Api
 
     def create
       photo = CreatePhotoOperation.new.get(params, current_user)
-      album = Album.new
       respond_with :api, album, photo
 
     end
 
     def update
       photo = UpdatePhotoOperation.new.get(params, current_user)
-      album = Album.new
       respond_with :api, album, photo
     end
 
@@ -29,6 +27,10 @@ module Api
     end
 
     private
+
+    def album
+      @album ||= Album.find(params[:album_id])
+    end
 
     def resource
       @_resource ||= Photo.find(params[:id])
