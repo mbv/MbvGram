@@ -1,5 +1,5 @@
 module Api
-  class SearchController < ApplicationController
+  class SearchController < ApiController
     def index
       render json: ThinkingSphinx.search(params[:text], star: true)
     end
