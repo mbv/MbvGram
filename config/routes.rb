@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get '/users/:id', to: 'users#show'
 
       get '/search/:text', to: 'search#index'
+      get '/search', to: 'search#index'
 
       mount ActionCable.server => '/cable'
     end

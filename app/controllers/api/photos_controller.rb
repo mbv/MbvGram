@@ -12,14 +12,12 @@ module Api
     end
 
     def create
-      photo = CreatePhotoOperation.new.get(params, current_user)
-      respond_with :api, album, photo
+      respond_with :api, album, CreatePhotoOperation.new.get(params)
 
     end
 
     def update
-      photo = UpdatePhotoOperation.new.get(params, current_user)
-      respond_with :api, album, photo
+      respond_with :api, album, UpdatePhotoOperation.new.get(resource, params)
     end
 
     def destroy

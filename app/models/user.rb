@@ -17,7 +17,17 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
-  delegate :can?, :cannot?, :to => :ability
+  delegate :can?, :cannot?, to: :ability
+
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'false' do
+      indexes :first_name
+      indexes :last_name
+    end
+  end
 
   ROLES = [:admin, :user].freeze
 

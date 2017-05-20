@@ -13,12 +13,12 @@ module Api
 
     def create
       respond_with :api,
-                   CreateAlbumOperation.new.get(params, current_user)
+                   CreateAlbumOperation.new.get(params)
     end
 
     def update
       respond_with :api,
-                   UpdateAlbumOperation.new.get(params, current_user)
+                   UpdateAlbumOperation.new.get(resource, params)
     end
 
     def destroy

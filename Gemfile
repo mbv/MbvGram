@@ -41,8 +41,8 @@ gem 'mini_magick'
 gem 'activeadmin'
 
 
-gem 'elasticsearch-rails'
 gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
 
 gem 'dry-core'
 
@@ -53,6 +53,8 @@ gem 'dry-types'
 gem 'dry-validation'
 
 gem 'responders'
+
+gem 'request_store'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

@@ -3,14 +3,13 @@ class UpdateAlbumOperation
   def initialize
     @operation = Dry.Transaction(container: UpdateAlbumOperationContainer) do
       step :validate_album
-      step :find_album
       step :get_tags
       step :update_album
     end
   end
 
-  def get(data, user)
-    result = @operation.call(data: data, user: user)
+  def get(resource, data)
+    result = @operation.call(data: data, album: resource)
     if result.right?
       result.value[:album]
     else
@@ -23,17 +22,12 @@ class UpdateAlbumOperationContainer
   extend Dry::Container::Mixin
 
   register :validate_album, (->(input) do
-    validation_result = AlbumUpdateSchema.call(input[:data])
+    validation_result = AlbumSchema.call(input[:data])
     if validation_result.success?
-      Dry::Monads.Right(params: validation_result.output, user: input[:user])
+      Dry::Monads.Right(params: validation_result.output, album: input[:album])
     else
       Dry::Monads.Left(validation_result)
     end
-  end)
-
-  register :find_album, (->(input) do
-    album = Album.find(input[:params]['id'])
-    Dry::Monads.Right(album: album, **input)
   end)
 
   register :get_tags, (->(input) do
@@ -47,7 +41,7 @@ class UpdateAlbumOperationContainer
     params = { title:       input[:params]['title'],
                description: input[:params]['description'],
                tags:        input[:tags] }
-    album  = input[:album].update(params)
-    Dry::Monads.Right(album: album)
+    input[:album].update(params)
+    Dry::Monads.Right(album: input[:album])
   end)
 end

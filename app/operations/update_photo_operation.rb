@@ -3,14 +3,13 @@ class UpdatePhotoOperation
   def initialize
     @operation = Dry.Transaction(container: UpdatePhotoOperationContainer) do
       step :validate_photo
-      step :find_photo
       step :get_tags
       step :update_photo
     end
   end
 
-  def get(data, user)
-    result = @operation.call(data: data, user: user)
+  def get(resource, data)
+    result = @operation.call(data: data, photo: resource)
     if result.right?
       result.value[:photo]
     else
@@ -23,17 +22,12 @@ class UpdatePhotoOperationContainer
   extend Dry::Container::Mixin
 
   register :validate_photo, (->(input) do
-    validation_result = PhotoUpdateSchema.call(input[:data])
+    validation_result = PhotoSchema.call(input[:data])
     if validation_result.success?
-      Dry::Monads.Right(params: validation_result.output)
+      Dry::Monads.Right(params: validation_result.output, photo: input[:photo])
     else
       Dry::Monads.Left(validation_result)
     end
-  end)
-
-  register :find_photo, (->(input) do
-    photo = Photo.find(input[:params]['id'])
-    Dry::Monads.Right(photo: photo, **input)
   end)
 
   register :get_tags, (->(input) do
@@ -47,7 +41,7 @@ class UpdatePhotoOperationContainer
     params = { description: input[:params]['description'],
                album_id:    input[:params]['album_id'],
                tags:        input[:tags] }
-    photo  = input[:photo].update(params)
-    Dry::Monads.Right(photo: photo)
+    input[:photo].update(params)
+    Dry::Monads.Right(photo: input[:photo])
   end)
 end

@@ -8,8 +8,8 @@ class CreateAlbumOperation
     end
   end
 
-  def get(data, user)
-    result = @operation.call(data: data, user: user)
+  def get(data)
+    result = @operation.call(data: data)
     if result.right?
       result.value[:album]
     else
@@ -24,7 +24,7 @@ class CreateAlbumOperationContainer
   register :validate_album, (->(input) do
     validation_result = AlbumSchema.call(input[:data])
     if validation_result.success?
-      Dry::Monads.Right(params: validation_result.output, user: input[:user])
+      Dry::Monads.Right(params: validation_result.output)
     else
       Dry::Monads.Left(validation_result)
     end
@@ -41,7 +41,7 @@ class CreateAlbumOperationContainer
     params       = { title:       input[:params]['title'],
                      description: input[:params]['description'],
                      tags:        input[:tags],
-                     user:        input[:user] }
+                     user:        RequestStore.store[:current_user] }
     album        = Album.create(params)
     Dry::Monads.Right(album: album)
   end)

@@ -8,8 +8,8 @@ class CreatePhotoOperation
     end
   end
 
-  def get(data, user)
-    result = @operation.call(data: data, user: user)
+  def get(data)
+    result = @operation.call(data: data)
     if result.right?
       result.value[:photo]
     else

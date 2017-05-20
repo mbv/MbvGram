@@ -8,6 +8,24 @@ class Photo < ApplicationRecord
 
   validate :photo_count_within_limit, on: :create
 
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings index: {number_of_shards: 1} do
+    mappings dynamic: 'false' do
+      indexes :description
+
+      indexes :tags, type: 'nested' do
+        indexes :name
+      end
+    end
+  end
+
+  def as_indexed_json(options = nil)
+    as_json(include: { tags: { only: :name } },
+            except: [:id, :_id])
+  end
+
   def photo_count_within_limit
     if album.photos(:reload).count >= 50
       errors.add(:base, 'Exceeded photo limit')
