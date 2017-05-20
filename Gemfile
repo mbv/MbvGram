@@ -23,6 +23,8 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'slim'
+
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'angular_rails_csrf'
 gem 'devise'
@@ -39,8 +41,8 @@ gem 'mini_magick'
 gem 'activeadmin'
 
 
-gem 'mysql2',          '~> 0.3.21'
-gem 'thinking-sphinx', '~> 3.3.0'
+gem 'elasticsearch-rails'
+gem 'elasticsearch-model'
 
 gem 'dry-core'
 
