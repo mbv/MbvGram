@@ -3,4 +3,11 @@ class Relationship < ApplicationRecord
   belongs_to :followed, class_name: 'User'
   validates :follower_id, presence: true
   validates :followed_id, presence: true
+  validate :cannot_follow_yourself
+
+  private
+
+  def cannot_follow_yourself
+    errors.add(:follower, 'You cannot follow to yourself') if follower == followed
+  end
 end

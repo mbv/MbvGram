@@ -13,9 +13,12 @@ Rails.application.routes.draw do
       end
       resources :tags, except: [:update, :show]
 
+      get '/photos/feed', to: 'photos#feed'
       get '/photos/:id', to: 'photos#show'
 
+
       get '/users/:id', to: 'users#show'
+      patch '/users/follow', to: 'users#follow'
 
       get '/search/:text', to: 'search#index'
       get '/search', to: 'search#index'

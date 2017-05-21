@@ -26,6 +26,8 @@ class Photo < ApplicationRecord
             except: [:id, :_id])
   end
 
+  private
+
   def photo_count_within_limit
     if album.photos(:reload).count >= 50
       errors.add(:base, 'Exceeded photo limit')

@@ -6,6 +6,11 @@ module Api
       respond_with album.photos.includes([:taggings, :tags])
     end
 
+    def feed
+      respond_with Photo.joins(:album).where(albums: { user: current_user.following })
+                       .order(created_at: :desc).all.includes([:taggings, :tags])
+    end
+
     # GET /photos/1
     def show
       respond_with resource
