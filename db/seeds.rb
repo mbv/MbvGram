@@ -5,3 +5,18 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+#
+#
+# user = User.find(2)
+# 5.times do |num|
+#   num += 1
+#   Album.create!(title:       "Test user2 album #{num}",
+#                 description: "Sample user2 #{num}",
+#                 user: user)
+# end
+
+10.times do |num|
+  num += 1
+  Tag.create!(name:       "Tag #{num}")
+end

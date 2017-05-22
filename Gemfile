@@ -23,8 +23,47 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'slim'
+
+gem 'active_model_serializers', '~> 0.10.0'
+gem 'angular_rails_csrf'
+gem 'devise'
+gem 'omniauth'
+gem 'rack-cors'
+
+gem 'devise_token_auth'
+
+gem 'cancancan', '~> 1.10'
+gem 'carrierwave', '~> 1.0'
+
+gem 'mini_magick'
+
+gem 'activeadmin'
+
+
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+
+gem 'dry-core'
+
+gem 'dry-container'
+gem 'dry-monads'
+gem 'dry-transaction'
+gem 'dry-types'
+gem 'dry-validation'
+
+gem 'responders'
+
+gem 'request_store'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem 'capistrano', '~> 3.7', '>= 3.7.1'
+gem 'capistrano-rails', '~> 1.2'
+gem 'capistrano-passenger', '~> 0.2.0'
+
+gem 'capistrano-rbenv', '~> 2.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -38,6 +77,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  gem 'bullet'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
