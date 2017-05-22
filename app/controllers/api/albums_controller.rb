@@ -3,7 +3,12 @@ module Api
     before_action :authenticate_user!
 
     def index
-      respond_with current_user.albums.includes([:taggings, :tags])
+      respond_with current_user.albums.includes([:taggings, :tags, :photos])
+    end
+
+    def user_albums
+      respond_with Album.where(user_id: params[:id]).all
+                       .includes([:taggings, :tags, :photos])
     end
 
     # GET /albums/1

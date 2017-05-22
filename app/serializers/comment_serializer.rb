@@ -1,4 +1,4 @@
-class CommentSerializer < ActiveModel::Serializer
+class CommentSerializer < ActiveModel::Serializerdestroy
   attributes :id, :user, :photo, :text, :created_at, :updated_at,
              :can_delete, :object_type
 

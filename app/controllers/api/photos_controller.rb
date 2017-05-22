@@ -8,7 +8,7 @@ module Api
 
     def feed
       respond_with Photo.joins(:album).where(albums: { user: current_user.following })
-                       .order(created_at: :desc).all.includes([:taggings, :tags])
+                       .order(created_at: :desc).all.includes([:taggings, :tags, album: :user])
     end
 
     # GET /photos/1

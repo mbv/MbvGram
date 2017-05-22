@@ -14,6 +14,16 @@ module Api
 
     end
 
+    def unfollow
+      if resource.followers.none? { |user| user.id == current_user.id }
+        render json: { errors: 'not Followed' }
+      else
+        resource.followers.delete(current_user)
+        render json: { errors: 'unfollowed' }
+      end
+
+    end
+
     private
 
     def resource

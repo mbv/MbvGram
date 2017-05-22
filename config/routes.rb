@@ -17,8 +17,10 @@ Rails.application.routes.draw do
       get '/photos/:id', to: 'photos#show'
 
 
+      get '/users/:id/albums', to: 'albums#user_albums'
       get '/users/:id', to: 'users#show'
       patch '/users/follow', to: 'users#follow'
+      patch '/users/unfollow', to: 'users#unfollow'
 
       get '/search/:text', to: 'search#index'
       get '/search', to: 'search#index'
