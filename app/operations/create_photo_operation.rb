@@ -22,7 +22,7 @@ end
 class CreatePhotoOperationContainer
   extend Dry::Container::Mixin
 
-  register :validate_photo, lambda do |input|
+  register :validate_photo, (lambda do |input|
     #TODO| FIX
     input[:data]["tag_list"] = JSON.parse(input[:data]["tag_list"])
     validation_result        = PhotoSchema.call(input[:data])
@@ -31,21 +31,21 @@ class CreatePhotoOperationContainer
     else
       Dry::Monads.Left(validation_result)
     end
-  end
+  end)
 
-  register :get_tags, lambda do |input|
+  register :get_tags, (lambda do |input|
     tags = input[:params]["tag_list"].map do |tag|
       Tag.where(name: tag["name"]).first_or_create!
     end
     Dry::Monads.Right(tags: tags, **input)
-  end
+  end)
 
-  register :create_photo, lambda do |input|
+  register :create_photo, (lambda do |input|
     params = { description: input[:params]["description"],
                album_id:    input[:params]["album_id"],
                file:        input[:params]["file"],
                tags:        input[:tags] }
     photo  = Photo.create(params)
     Dry::Monads.Right(photo: photo)
-  end
+  end)
 end
