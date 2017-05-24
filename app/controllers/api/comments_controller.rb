@@ -1,7 +1,7 @@
 module Api
   class CommentsController < ApiController
-    before_action :authenticate_user!
     before_action :set_comment, only: [:show, :update, :destroy]
+    load_and_authorize_resource
 
     def index
       @comments = Photo.find(params[:photo_id]).comments.includes(:user).order(created_at: :desc)

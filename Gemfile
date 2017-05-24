@@ -65,11 +65,14 @@ group :development, :test do
   gem 'rspec-rails'
 
   gem 'factory_girl_rails'
+  gem 'fixture_builder'
+
+  gem 'faker'
 end
 
 group :test do
   gem 'database_cleaner'
-  gem 'faker'
+  gem 'rails-controller-testing'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
 end
 

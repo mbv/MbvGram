@@ -1,6 +1,6 @@
 module Api
   class PhotosController < ApiController
-    before_action :authenticate_user!
+    load_and_authorize_resource
 
     def index
       respond_with album.photos.includes([:taggings, :tags])

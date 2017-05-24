@@ -1,5 +1,7 @@
 module Api
   class UsersController < ApiController
+    load_and_authorize_resource
+
     def show
       respond_with resource
     end

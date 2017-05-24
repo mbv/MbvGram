@@ -5,9 +5,7 @@ class Ability
     user ||= User.new
     if user.id
       if user.is? :admin
-        can :manage, Album
-        can :manage, Photo
-        can :manage, Comment
+        can :manage, :all
 
       else
         can :create, Album
@@ -16,12 +14,15 @@ class Ability
         # end
         can [:read, :update, :destroy], Album, user_id: user.id
         can :add_photo, Album, user_id: user.id
+        can :user_albums, Album, user_id: user.id
 
 
-        can :create, Photo
+        can [:create, :feed], Photo
         can [:read, :update, :destroy], Photo, album: { user_id: user.id }
 
         can [:update, :destroy], Comment, user_id: user.id
+
+        can :show, User
 
         can :follow, User do |following_user|
           user.following.none? { |u| u.id == following_user.id } &&
