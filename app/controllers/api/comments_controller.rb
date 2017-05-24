@@ -1,16 +1,15 @@
+# frozen_string_literal: true
+
 module Api
   class CommentsController < ApiController
-    before_action :set_comment, only: [:show, :update, :destroy]
     load_and_authorize_resource
 
     def index
-      @comments = Photo.find(params[:photo_id]).comments.includes(:user).order(created_at: :desc)
-      render json: @comments
+      respond_with Photo.find(params[:photo_id]).comments.includes(:user).order(created_at: :desc)
     end
 
-    # GET /comments/1
     def show
-      render json: @comment
+      respond_with resource
     end
 
     def create
@@ -26,20 +25,17 @@ module Api
     end
 
     def update
-      if @comment.update(comment_params)
-        render json: @comment
-      else
-        render json: @comment.errors, status: :unprocessable_entity
-      end
+      respond_with resource.update(comment_params)
     end
 
     def destroy
-      @comment.destroy
+      resource.destroy
     end
 
     private
-    def set_comment
-      @comment = Comment.find(params[:id])
+
+    def resource
+      @_resource ||= Album.find(params[:id])
     end
 
     def comment_params

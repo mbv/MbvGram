@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Relationship < ApplicationRecord
-  belongs_to :follower, class_name: 'User'
-  belongs_to :followed, class_name: 'User'
+  belongs_to :follower, class_name: "User"
+  belongs_to :followed, class_name: "User"
   validates :follower_id, presence: true
   validates :followed_id, presence: true
   validate :cannot_follow_yourself
@@ -8,6 +10,6 @@ class Relationship < ApplicationRecord
   private
 
   def cannot_follow_yourself
-    errors.add(:follower, 'You cannot follow to yourself') if follower == followed
+    errors.add(:follower, "You cannot follow to yourself") if follower == followed
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Photo < ApplicationRecord
   belongs_to :album
   has_many :taggings, as: :taggable, dependent: :destroy
@@ -11,26 +13,26 @@ class Photo < ApplicationRecord
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
-  settings index: {number_of_shards: 1} do
-    mappings dynamic: 'false' do
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: "false" do
       indexes :description
 
-      indexes :tags, type: 'nested' do
+      indexes :tags, type: "nested" do
         indexes :name
       end
     end
   end
 
-  def as_indexed_json(options = nil)
+  def as_indexed_json(_ = nil)
     as_json(include: { tags: { only: :name } },
-            except: [:id, :_id])
+            except:  %i[id _id])
   end
 
   private
 
   def photo_count_within_limit
     if album.photos(:reload).count >= 50
-      errors.add(:base, 'Exceeded photo limit')
+      errors.add(:base, "Exceeded photo limit")
     end
   end
 end

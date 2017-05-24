@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   class UsersController < ApiController
     load_and_authorize_resource
@@ -8,20 +10,20 @@ module Api
 
     def follow
       if resource.followers.any? { |user| user.id == current_user.id }
-        render json: { errors: 'Also follower' }
+        render json: { errors: "Also follower" }
       else
         resource.followers << current_user
-        render json: { errors: 'Followed' }
+        render json: { errors: "Followed" }
       end
 
     end
 
     def unfollow
       if resource.followers.none? { |user| user.id == current_user.id }
-        render json: { errors: 'not Followed' }
+        render json: { errors: "not Followed" }
       else
         resource.followers.delete(current_user)
-        render json: { errors: 'unfollowed' }
+        render json: { errors: "unfollowed" }
       end
 
     end

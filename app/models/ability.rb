@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Ability
   include CanCan::Ability
 
@@ -30,7 +32,7 @@ class Ability
         end
         can :unfollow, User do |following_user|
           user.following.any? { |u| u.id == following_user.id }
-          end
+        end
         can :show_content, User do |following_user|
           user.following.any? { |u| u.id == following_user.id } || user.id == following_user.id
         end

@@ -11,7 +11,6 @@ module Api
                        .order(created_at: :desc).all.includes([:taggings, :tags, album: :user])
     end
 
-    # GET /photos/1
     def show
       respond_with resource
     end
