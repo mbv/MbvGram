@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 AlbumSchema = Dry::Validation.Schema(ApplicationSchema) do
   required(:title).filled(:str?)
   required(:description).maybe(:str?)

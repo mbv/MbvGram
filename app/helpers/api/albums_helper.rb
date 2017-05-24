@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Api
-  module SearchHelper
+  module AlbumsHelper
   end
 end

@@ -15,7 +15,6 @@ module Api
         resource.followers << current_user
         render json: { errors: "Followed" }
       end
-
     end
 
     def unfollow
@@ -25,7 +24,6 @@ module Api
         resource.followers.delete(current_user)
         render json: { errors: "unfollowed" }
       end
-
     end
 
     private

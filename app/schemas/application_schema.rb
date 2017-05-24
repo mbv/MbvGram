@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ApplicationSchema = Dry::Validation.Schema do
   configure do
     def is_record?(klass, value)
@@ -5,7 +7,7 @@ ApplicationSchema = Dry::Validation.Schema do
     end
 
     def self.messages
-      super.merge(en: { errors: { is_record?: 'id is not valid' } })
+      super.merge(en: { errors: { is_record?: "id is not valid" } })
     end
   end
 end

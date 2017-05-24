@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PhotoSerializer < ActiveModel::Serializer
   attributes :id, :description, :created_at, :updated_at, :tag_list,
              :file, :album_id, :album, :user, :object_type, :can_update, :can_delete

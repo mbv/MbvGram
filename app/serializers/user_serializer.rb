@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserSerializer < ActiveModel::Serializer
   attributes :id, :first_name, :last_name, :address, :image,
              :can_follow, :can_unfollow, :can_show_content, :object_type

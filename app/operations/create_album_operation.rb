@@ -1,5 +1,6 @@
-class CreateAlbumOperation
+# frozen_string_literal: true
 
+class CreateAlbumOperation
   def initialize
     @operation = Dry.Transaction(container: CreateAlbumOperationContainer) do
       step :validate_album
@@ -21,28 +22,28 @@ end
 class CreateAlbumOperationContainer
   extend Dry::Container::Mixin
 
-  register :validate_album, (->(input) do
+  register :validate_album, lambda do |input|
     validation_result = AlbumSchema.call(input[:data])
     if validation_result.success?
       Dry::Monads.Right(params: validation_result.output)
     else
       Dry::Monads.Left(validation_result)
     end
-  end)
+  end
 
-  register :get_tags, (->(input) do
-    tags = input[:params]['tag_list'].map do |tag|
-      Tag.where(name: tag['name']).first_or_create!
+  register :get_tags, lambda do |input|
+    tags = input[:params]["tag_list"].map do |tag|
+      Tag.where(name: tag["name"]).first_or_create!
     end
     Dry::Monads.Right(tags: tags, **input)
-  end)
+  end
 
-  register :create_album, (->(input) do
-    params       = { title:       input[:params]['title'],
-                     description: input[:params]['description'],
+  register :create_album, lambda do |input|
+    params       = { title:       input[:params]["title"],
+                     description: input[:params]["description"],
                      tags:        input[:tags],
                      user:        RequestStore.store[:current_user] }
     album        = Album.create(params)
     Dry::Monads.Right(album: album)
-  end)
+  end
 end

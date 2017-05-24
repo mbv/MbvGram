@@ -1,7 +1,6 @@
-class PhotoUploader < CarrierWave::Uploader::Base
+# frozen_string_literal: true
 
-  # Include RMagick or MiniMagick support:
-  # include CarrierWave::RMagick
+class PhotoUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
@@ -15,7 +14,7 @@ class PhotoUploader < CarrierWave::Uploader::Base
   end
 
   def content_type_whitelist
-    /image\//
+    %r{image\/}
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -53,5 +52,4 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
-
 end

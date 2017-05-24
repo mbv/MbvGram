@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentRelayJob < ApplicationJob
   def perform(comment)
     if comment.photo.album.user_id != comment.user_id
