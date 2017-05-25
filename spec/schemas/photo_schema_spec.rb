@@ -2,14 +2,17 @@
 
 require "rails_helper"
 
-RSpec.describe AlbumSchema do
+RSpec.describe PhotoSchema do
   describe "validation" do
     shared_examples "a valid" do |fields|
       subject(:schema) { described_class }
 
+      let(:album) { create(:album) }
+
       let(:valid_input) do
-        { title:       "album",
-          description: "album description",
+        { description: "photo description",
+          album_id:    album.id,
+          file:        "album description",
           tag_list:    [{ name: "tag1" }, { name: "tag2" }, { name: "tag3" }] }
       end
 
@@ -32,14 +35,14 @@ RSpec.describe AlbumSchema do
       end
     end
 
-    it_behaves_like "a valid", title: "Tets"
     it_behaves_like "a valid", description: "sdasd"
     it_behaves_like "a valid", description: ""
     it_behaves_like "a valid", tag_list: []
 
-    it_behaves_like "a invalid", title: ""
+    it_behaves_like "a invalid", file: ""
     it_behaves_like "a invalid", tag_list: [{ name: "" }]
     it_behaves_like "a invalid", tag_list: [{ name: "1" }]
     it_behaves_like "a invalid", tag_list: [{}]
+    it_behaves_like "a invalid", album_id: 0
   end
 end
