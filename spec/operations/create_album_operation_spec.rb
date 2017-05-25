@@ -3,23 +3,33 @@
 require "rails_helper"
 
 RSpec.describe CreateAlbumOperation do
-  describe "#validate_album" do
+  describe "#run" do
+    describe "create album" do
 
-  end
+      before do
+        RequestStore.store[:current_user] = create(:user)
+      end
 
-  describe "#get_tags" do
-    let(:input) { { params: { "tag_list" => [{ "name" => "tag1" }, { "name" => "tag2" }, { "name" => "tag3" }] } } }
-    let(:empty_input) { { params: { "tag_list" => [] } } }
+      subject(:album) { described_class.new.run(input) }
 
-    get_tags_step = CreateAlbumOperationContainer.resolve(:get_tags)
-    it "return tag existing objects" do
-      tags = [Tag.create!(name: "tag1"), Tag.create!(name: "tag2"), Tag.create!(name: "tag3")]
-      expect(get_tags_step.call(input).value[:tags]).to match_array(tags)
+      let(:input) do
+        ActionController::Parameters.new(title:       "album",
+                                         description: "album description",
+                                         tag_list:    [{ "name" => "tag1" }, { "name" => "tag2" }, { "name" => "tag3" }])
+      end
+
+      it "valid object type" do
+        expect(album).to be_a(Album)
+      end
+      it "with title" do
+        expect(album).to have_attributes(title: "album")
+      end
+      it "with description" do
+        expect(album).to have_attributes(description: "album description")
+      end
+      it "with tags" do
+        expect(album).to have_attributes(tags: Tag.all)
+      end
     end
-
-    it "empty tag list" do
-      expect(get_tags_step.call(empty_input).value[:tags]).to match_array([])
-    end
-
   end
 end
