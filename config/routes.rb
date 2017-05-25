@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -11,7 +13,7 @@ Rails.application.routes.draw do
           resources :comments
         end
       end
-      resources :tags, except: [:update, :show]
+      resources :tags, except: %i[update show]
 
       get "/photos/feed", to: "photos#feed"
       get "/photos/:id", to: "photos#show"

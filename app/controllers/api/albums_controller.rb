@@ -2,8 +2,6 @@
 
 module Api
   class AlbumsController < ApiController
-    load_and_authorize_resource except: :user_albums
-
     def user_albums
       user = User.find(params[:id])
       authorize! :show_content, user
@@ -12,20 +10,22 @@ module Api
     end
 
     def show
+      authorize! :show, resource
       respond_with @album = resource
     end
 
     def create
-      respond_with :api,
-                   CreateAlbumOperation.new.get(params)
+      authorize! :create, Album
+      respond_with :api, CreateAlbumOperation.new.run(params)
     end
 
     def update
-      respond_with :api,
-                   UpdateAlbumOperation.new.get(resource, params)
+      authorize! :update, resource
+      respond_with :api, UpdateAlbumOperation.new.run(params, resource)
     end
 
     def destroy
+      authorize! :destroy, resource
       resource.destroy
     end
 

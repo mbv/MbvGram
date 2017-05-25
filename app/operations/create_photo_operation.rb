@@ -1,43 +1,28 @@
 # frozen_string_literal: true
 
-class CreatePhotoOperation
+class CreatePhotoOperation < BaseOperation
   def initialize
-    @operation = Dry.Transaction(container: CreatePhotoOperationContainer) do
-      step :validate_photo
+    operation = Dry.Transaction(container: CreatePhotoOperationContainer) do
+      step :prepare_data
+      step :validate_resource
       step :get_tags
       step :create_photo
     end
-  end
+    schema = PhotoSchema
 
-  def get(data)
-    result = @operation.call(data: data)
-    if result.right?
-      result.value[:photo]
-    else
-      result.value
-    end
+    super(operation, schema)
   end
 end
 
 class CreatePhotoOperationContainer
   extend Dry::Container::Mixin
+  merge BaseOperationContainer
+  merge GetTagsOperationContainer
 
-  register :validate_photo, (lambda do |input|
+  register :prepare_data, (lambda do |input|
     #TODO| FIX
     input[:data]["tag_list"] = JSON.parse(input[:data]["tag_list"])
-    validation_result        = PhotoSchema.call(input[:data])
-    if validation_result.success?
-      Dry::Monads.Right(params: validation_result.output)
-    else
-      Dry::Monads.Left(validation_result)
-    end
-  end)
-
-  register :get_tags, (lambda do |input|
-    tags = input[:params]["tag_list"].map do |tag|
-      Tag.where(name: tag["name"]).first_or_create!
-    end
-    Dry::Monads.Right(tags: tags, **input)
+    Dry::Monads.Right(**input)
   end)
 
   register :create_photo, (lambda do |input|
@@ -46,6 +31,6 @@ class CreatePhotoOperationContainer
                file:        input[:params]["file"],
                tags:        input[:tags] }
     photo  = Photo.create(params)
-    Dry::Monads.Right(photo: photo)
+    Dry::Monads.Right(resource: photo)
   end)
 end

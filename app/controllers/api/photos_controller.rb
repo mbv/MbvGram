@@ -18,12 +18,11 @@ module Api
     end
 
     def create
-      respond_with :api, album, CreatePhotoOperation.new.get(params)
-
+      respond_with :api, album, CreatePhotoOperation.new.run(params)
     end
 
     def update
-      respond_with :api, album, UpdatePhotoOperation.new.get(resource, params)
+      respond_with :api, album, UpdatePhotoOperation.new.run(params, resource)
     end
 
     def destroy
