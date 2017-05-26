@@ -2,44 +2,34 @@
 
 module Api
   class CommentsController < ApiController
-    load_and_authorize_resource
 
     def index
       respond_with Photo.find(params[:photo_id]).comments.includes(:user).order(created_at: :desc)
     end
 
-    def show
-      respond_with resource
-    end
-
     def create
-      @comment = Comment.create(comment_params)
-      Photo.find(params[:photo_id]).comments << @comment
-
-      if @comment.save
-        CommentRelayJob.perform_later(@comment)
-        render json: @comment, status: :created, location: [:api, @comment.photo.album, @comment.photo, @comment]
-      else
-        render json: @comment.errors, status: :unprocessable_entity
-      end
+      authorize! :add_comment, photo
+      respond_with :api, photo.album, photo, CreateCommentOperation.new.run(params)
     end
 
     def update
-      respond_with resource.update(comment_params)
+      authorize! :update, resource
+      respond_with :api, photo.album, photo, UpdateCommentOperation.new.run(params, resource)
     end
 
     def destroy
+      authorize! :destroy, resource
       resource.destroy
     end
 
     private
 
-    def resource
-      @_resource ||= Album.find(params[:id])
+    def photo
+      @_photo ||= Photo.find(params[:photo_id])
     end
 
-    def comment_params
-      params.permit(:user_id, :photo, :text)
+    def resource
+      @_resource ||= Comment.find(params[:id])
     end
   end
 end

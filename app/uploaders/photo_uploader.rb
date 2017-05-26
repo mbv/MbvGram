@@ -47,9 +47,15 @@ class PhotoUploader < CarrierWave::Uploader::Base
   #   %w(jpg jpeg gif png)
   # end
 
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
+  def md5
+    @md5 ||= Digest::MD5.hexdigest(model.send(mounted_as).read.to_s + Time.now.to_i.to_s)
+  end
+
+  def filename
+    @name ||= "#{md5}#{File.extname(super)}" if super
+  end
+
+  def size_range
+    1..20.megabytes
+  end
 end

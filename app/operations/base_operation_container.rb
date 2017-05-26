@@ -11,4 +11,14 @@ class BaseOperationContainer
       Dry::Monads.Left(validation_result)
     end
   end)
+
+  register :create_resource, (lambda do |input|
+    resource = input[:entity].create(input[:params])
+    Dry::Monads.Right(resource: resource)
+  end)
+
+  register :update_resource, (lambda do |input|
+    input[:resource].update(input[:params])
+    Dry::Monads.Right(resource: input[:resource])
+  end)
 end

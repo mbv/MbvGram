@@ -9,8 +9,8 @@ Rails.application.routes.draw do
     scope :v1 do
       mount_devise_token_auth_for "User", at: "auth"
       resources :albums, only: %i[show create update destroy] do
-        resources :photos do
-          resources :comments
+        resources :photos, only: %i[index show create update destroy] do
+          resources :comments, only: %i[index create update destroy]
         end
       end
       resources :tags, except: %i[update show]

@@ -5,9 +5,10 @@ class CreateAlbumOperation < BaseOperation
     operation = Dry.Transaction(container: CreateAlbumOperationContainer) do
       step :validate_resource
       step :get_tags
-      step :create_album
+      step :prepare_params
+      step :create_resource
     end
-    schema = AlbumSchema
+    schema    = AlbumSchema
 
     super(operation, schema)
   end
@@ -18,12 +19,11 @@ class CreateAlbumOperationContainer
   merge BaseOperationContainer
   merge GetTagsOperationContainer
 
-  register :create_album, (lambda do |input|
-    params       = { title:       input[:params]["title"],
-                     description: input[:params]["description"],
-                     tags:        input[:tags],
-                     user:        RequestStore.store[:current_user] }
-    album        = Album.create(params)
-    Dry::Monads.Right(resource: album)
+  register :prepare_params, (lambda do |input|
+    params = { title:       input[:params]["title"],
+               description: input[:params]["description"],
+               tags:        input[:tags],
+               user:        RequestStore.store[:current_user] }
+    Dry::Monads.Right(params: params, entity: Album)
   end)
 end

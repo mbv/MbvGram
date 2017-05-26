@@ -5,7 +5,8 @@ class UpdateAlbumOperation < BaseOperation
     operation = Dry.Transaction(container: UpdateAlbumOperationContainer) do
       step :validate_resource
       step :get_tags
-      step :update_album
+      step :prepare_params
+      step :update_resource
     end
     schema = AlbumSchema
 
@@ -18,11 +19,10 @@ class UpdateAlbumOperationContainer
   merge BaseOperationContainer
   merge GetTagsOperationContainer
 
-  register :update_album, (lambda do |input|
+  register :prepare_params, (lambda do |input|
     params = { title:       input[:params]["title"],
                description: input[:params]["description"],
                tags:        input[:tags] }
-    input[:resource].update(params)
-    Dry::Monads.Right(resource: input[:resource])
+    Dry::Monads.Right(params: params, resource: input[:resource])
   end)
 end

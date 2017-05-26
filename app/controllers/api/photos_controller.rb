@@ -14,25 +14,29 @@ module Api
     end
 
     def show
+      authorize! :show, resource
       respond_with resource
     end
 
     def create
+      authorize! :add_photo, album
       respond_with :api, album, CreatePhotoOperation.new.run(params)
     end
 
     def update
+      authorize! :update, resource
       respond_with :api, album, UpdatePhotoOperation.new.run(params, resource)
     end
 
     def destroy
+      authorize! :destroy, resource
       resource.destroy
     end
 
     private
 
     def album
-      @album ||= Album.find(params[:album_id])
+      @_album ||= Album.find(params[:album_id])
     end
 
     def resource

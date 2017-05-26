@@ -21,6 +21,7 @@ class Ability
 
         can %i[create feed], Photo
         can %i[read update destroy], Photo, album: { user_id: user.id }
+        can :add_comment, Photo, album: { user_id: user.id }
 
         can %i[update destroy], Comment, user_id: user.id
 

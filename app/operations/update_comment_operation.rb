@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-class UpdatePhotoOperation < BaseOperation
+class UpdateCommentOperation < BaseOperation
   def initialize
-    operation = Dry.Transaction(container: UpdatePhotoOperationContainer) do
+    operation = Dry.Transaction(container: UpdateCommentOperationContainer) do
       step :validate_resource
-      step :get_tags
       step :prepare_params
       step :update_resource
     end
@@ -14,15 +13,12 @@ class UpdatePhotoOperation < BaseOperation
   end
 end
 
-class UpdatePhotoOperationContainer
+class UpdateCommentOperationContainer
   extend Dry::Container::Mixin
   merge BaseOperationContainer
-  merge GetTagsOperationContainer
 
   register :prepare_params, (lambda do |input|
-    params = { description: input[:params]["description"],
-               album_id:    input[:params]["album_id"],
-               tags:        input[:tags] }
+    params = { text: input[:params]["text"] }
     Dry::Monads.Right(params: params, resource: input[:resource])
   end)
 end

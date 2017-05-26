@@ -6,7 +6,8 @@ class CreatePhotoOperation < BaseOperation
       step :prepare_data
       step :validate_resource
       step :get_tags
-      step :create_photo
+      step :prepare_params
+      step :create_resource
     end
     schema = PhotoSchema
 
@@ -25,12 +26,11 @@ class CreatePhotoOperationContainer
     Dry::Monads.Right(**input)
   end)
 
-  register :create_photo, (lambda do |input|
+  register :prepare_params, (lambda do |input|
     params = { description: input[:params]["description"],
                album_id:    input[:params]["album_id"],
                file:        input[:params]["file"],
                tags:        input[:tags] }
-    photo  = Photo.create(params)
-    Dry::Monads.Right(resource: photo)
+    Dry::Monads.Right(params: params, entity: Photo)
   end)
 end
