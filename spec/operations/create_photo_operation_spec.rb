@@ -35,6 +35,9 @@ RSpec.describe CreatePhotoOperation do
       it "with tags" do
         expect(photo).to have_attributes(tags: Tag.all)
       end
+      it "with album" do
+        expect(photo.album).to eq(album)
+      end
       it "with file" do
         expect(photo.file).to be_a(PhotoUploader)
       end

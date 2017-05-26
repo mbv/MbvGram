@@ -5,7 +5,7 @@ class CreateCommentOperation < BaseOperation
     operation = Dry.Transaction(container: CreateCommentOperationContainer) do
       step :validate_resource
       step :prepare_params
-      step :create_comment
+      step :create_resource
       step :notify_users
     end
     schema    = CommentSchema

@@ -7,7 +7,7 @@ class UpdateCommentOperation < BaseOperation
       step :prepare_params
       step :update_resource
     end
-    schema    = PhotoSchema
+    schema    = CommentSchema
 
     super(operation, schema)
   end
