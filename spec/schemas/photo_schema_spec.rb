@@ -12,7 +12,7 @@ RSpec.describe PhotoSchema do
       let(:valid_input) do
         { description: "photo description",
           album_id:    album.id,
-          file:        "album description",
+          file:        "file",
           tag_list:    [{ name: "tag1" }, { name: "tag2" }, { name: "tag3" }] }
       end
 
@@ -24,9 +24,12 @@ RSpec.describe PhotoSchema do
     shared_examples "a invalid" do |fields|
       subject(:schema) { described_class }
 
+      let(:album) { create(:album) }
+
       let(:valid_input) do
-        { title:       "album",
-          description: "album description",
+        { description: "photo description",
+          album_id:    album.id,
+          file:        "file",
           tag_list:    [{ name: "tag1" }, { name: "tag2" }, { name: "tag3" }] }
       end
 
