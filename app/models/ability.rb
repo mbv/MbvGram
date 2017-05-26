@@ -17,11 +17,18 @@ class Ability
         can %i[read update destroy], Album, user_id: user.id
         can :add_photo, Album, user_id: user.id
         can :user_albums, Album, user_id: user.id
+        can :show, Album do |album|
+          user.following.any? { |u| u.id == album.user.id } || user.id == album.user.id
+        end
 
 
         can %i[create feed], Photo
         can %i[read update destroy], Photo, album: { user_id: user.id }
         can :add_comment, Photo, album: { user_id: user.id }
+        can :show, Photo do |photo|
+          user.following.any? { |u| u.id == photo.album.user.id } || user.id == photo.album.user.id
+        end
+
 
         can %i[update destroy], Comment, user_id: user.id
 

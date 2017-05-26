@@ -11,12 +11,12 @@ module Api
 
     def show
       authorize! :show, resource
-      respond_with @album = resource
+      respond_with resource
     end
 
     def create
       authorize! :create, Album
-      respond_with :api, CreateAlbumOperation.new.run(params)
+      respond_with :api, @_resource = CreateAlbumOperation.new.run(params)
     end
 
     def update
