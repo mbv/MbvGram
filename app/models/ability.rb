@@ -25,7 +25,7 @@ class Ability
         can %i[create feed], Photo
         can %i[read update destroy], Photo, album: { user_id: user.id }
         can :add_comment, Photo, album: { user_id: user.id }
-        can :show, Photo do |photo|
+        can %i[show show_comments], Photo do |photo|
           user.following.any? { |u| u.id == photo.album.user.id } || user.id == photo.album.user.id
         end
 

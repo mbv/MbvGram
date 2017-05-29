@@ -5,8 +5,8 @@ module Api
     def user_albums
       user = User.find(params[:id])
       authorize! :show_content, user
-      respond_with Album.where(user: user).all
-                                 .includes(%i[taggings tags photos])
+      respond_with @_resources = Album.where(user: user).all
+                                     .includes(%i[taggings tags photos])
     end
 
     def show

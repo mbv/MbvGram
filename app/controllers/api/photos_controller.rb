@@ -5,11 +5,11 @@ module Api
     load_and_authorize_resource
 
     def index
-      respond_with album.photos.includes([:taggings, :tags])
+      respond_with @_resources = album.photos.includes([:taggings, :tags])
     end
 
     def feed
-      respond_with Photo.joins(:album).where(albums: { user: current_user.following })
+      respond_with @_resources = Photo.joins(:album).where(albums: { user: current_user.following })
                        .order(created_at: :desc).all.includes([:taggings, :tags, album: :user])
     end
 

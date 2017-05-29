@@ -4,7 +4,8 @@ module Api
   class CommentsController < ApiController
 
     def index
-      respond_with Photo.find(params[:photo_id]).comments.includes(:user).order(created_at: :desc)
+      authorize! :show_comments, photo
+      respond_with @_resources = Photo.find(params[:photo_id]).comments.includes(:user).order(created_at: :desc)
     end
 
     def create
