@@ -13,7 +13,6 @@ class BaseOperationContainer
   end)
 
   register :create_resource, (lambda do |input|
-    a = User.first
     resource = input[:entity].create(input[:params])
     Dry::Monads.Right(resource: resource)
   end)

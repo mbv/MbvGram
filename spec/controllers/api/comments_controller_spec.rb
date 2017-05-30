@@ -58,18 +58,11 @@ RSpec.describe Api::CommentsController, type: :controller do
 
   describe "#create" do
     context "user signed in" do
-      let(:user) { create(:user) }
-      let(:following_user) do
-        tmp_user = create(:user)
-        user.following << tmp_user
-        tmp_user
-      end
-
-      before do
-        login_user_with_token user
-      end
 
       it "new comment" do
+        user           = create(:user)
+        login_user_with_token user
+
         comment = { text: "text" }
         album   = create(:album, user: user)
         photo   = create(:photo, album: album)
@@ -79,7 +72,12 @@ RSpec.describe Api::CommentsController, type: :controller do
         expect(assigns(:_resource)).to eq Comment.first
       end
 
-      it "new comment by following user" do
+      it "new comment to photo following user" do
+        user           = create(:user)
+        following_user = create(:user)
+        user.following << following_user
+        login_user_with_token user
+
         comment = { text: "text" }
         album   = create(:album, user: following_user)
         photo   = create(:photo, album: album)

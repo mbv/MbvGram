@@ -21,7 +21,7 @@ class CreateCommentOperationContainer
   register :prepare_params, (lambda do |input|
     params = { text:     input[:params]["text"],
                photo_id: input[:params]["photo_id"],
-               user:     RequestStore.store[:current_user] }
+               user_id:     RequestStore.store[:current_user].id }
     Dry::Monads.Right(params: params, entity: Comment)
   end)
 
