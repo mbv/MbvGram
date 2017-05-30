@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-class UserSerializer < ActiveModel::Serializer
+class User1Serializer < ActiveModel::Serializer
   attributes :id, :first_name, :last_name, :address, :image,
-             :can_follow, :can_unfollow, :can_show_content, :object_type
+             :can_follow, :can_unfollow, :can_show_content, :object_type,
+             :email, :provider, :uid
 
   def can_follow
     scope.can? :follow, object

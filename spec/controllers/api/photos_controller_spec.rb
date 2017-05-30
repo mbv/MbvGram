@@ -60,11 +60,14 @@ RSpec.describe Api::PhotosController, type: :controller do
       end
 
       it "new photo" do
-        album = {description: "photo description",
-                  tag_list:    [] }
-        post :create, body: album.to_json, as: :json, format: :json
+        album = create(:album, user: user)
+        photo = { description: "photo description",
+                  album_id:    album.id,
+                  file:        File.open(Rails.root.join("spec", "fixtures", "files", "image.jpg")),
+                  tag_list:    [].to_json }
+        post :create, params: photo, format: :json
 
-        expect(assigns(:_resource)).to eq album.to_json
+        expect(assigns(:_resource)).to eq Photo.first
       end
 
     end

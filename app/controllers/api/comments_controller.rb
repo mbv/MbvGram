@@ -10,7 +10,7 @@ module Api
 
     def create
       authorize! :add_comment, photo
-      respond_with :api, photo.album, photo, CreateCommentOperation.new.run(params)
+      respond_with :api, photo.album, photo, @_resource = CreateCommentOperation.new.run(params)
     end
 
     def update

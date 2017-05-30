@@ -72,6 +72,7 @@ group :test do
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers', git: 'https://github.com/thoughtbot/shoulda-matchers.git', branch: 'rails-5'
+  gem 'simplecov'
 end
 
 group :development do

@@ -20,7 +20,7 @@ module Api
 
     def create
       authorize! :add_photo, album
-      respond_with :api, album, CreatePhotoOperation.new.run(params)
+      respond_with :api, album, @_resource = CreatePhotoOperation.new.run(params)
     end
 
     def update
