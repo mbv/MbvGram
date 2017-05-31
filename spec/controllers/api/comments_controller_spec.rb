@@ -4,8 +4,12 @@ require "rails_helper"
 
 RSpec.describe Api::CommentsController, type: :controller do
   describe "#index" do
+    let(:user) { create(:user) }
+    let(:album) { create(:album, user: user) }
+    let(:photo) { create(:photo, album: album) }
+    let(:comment) { create(:comment, photo: photo) }
+
     context "user signed in" do
-      let(:user) { create(:user) }
       let(:another_user) { create(:user) }
       let(:following_user) do
         tmp_user = create(:user)
@@ -17,28 +21,19 @@ RSpec.describe Api::CommentsController, type: :controller do
         login_user_with_token user
       end
 
-      it "own photo" do
-        album   = create(:album, user: user)
-        photo   = create(:photo, album: album)
-        comment = create(:comment, photo: photo)
+      it "show comment to own photo" do
         get :index, params: { album_id: album.id, photo_id: photo.id }, format: :json
         is_expected.to respond_with(200)
-        expect(assigns(:_resources)).to match_array([comment])
       end
 
       it "photo following user" do
-        album   = create(:album, user: following_user)
-        photo   = create(:photo, album: album)
-        comment = create(:comment, photo: photo)
+        album.update_attributes(user: following_user)
         get :index, params: { album_id: album.id, photo_id: photo.id }, format: :json
         is_expected.to respond_with(200)
-        expect(assigns(:_resources)).to match_array([comment])
       end
 
       it "photo not following user" do
-        album = create(:album, user: another_user)
-        photo = create(:photo, album: album)
-        create(:comment, photo: photo)
+        album.update_attributes(user: another_user)
         expect do
           get :index, params: { album_id: album.id, photo_id: photo.id }, format: :json
         end.to raise_error(CanCan::AccessDenied)
@@ -46,9 +41,6 @@ RSpec.describe Api::CommentsController, type: :controller do
     end
     context "user not signed in" do
       it "need authorization" do
-        album = create(:album)
-        photo = create(:photo, album: album)
-        create(:comment, photo: photo)
         get :index, params: { album_id: album.id, photo_id: photo.id }, format: :json
 
         is_expected.to respond_with(401)
@@ -57,15 +49,24 @@ RSpec.describe Api::CommentsController, type: :controller do
   end
 
   describe "#create" do
+    let(:user) { create(:user) }
+    let(:album) { create(:album, user: user) }
+    let(:photo) { create(:photo, album: album) }
+    let(:comment) { create(:comment, photo: photo) }
+
     context "user signed in" do
+      let(:following_user) do
+        tmp_user = create(:user)
+        user.following << tmp_user
+        tmp_user
+      end
+
+      before do
+        login_user_with_token user
+      end
 
       it "new comment" do
-        user           = create(:user)
-        login_user_with_token user
-
         comment = { text: "text" }
-        album   = create(:album, user: user)
-        photo   = create(:photo, album: album)
 
         post :create, params: { album_id: album.id, photo_id: photo.id }, body: comment.to_json, as: :json, format: :json
 
@@ -73,14 +74,8 @@ RSpec.describe Api::CommentsController, type: :controller do
       end
 
       it "new comment to photo following user" do
-        user           = create(:user)
-        following_user = create(:user)
-        user.following << following_user
-        login_user_with_token user
-
+        album.update_attributes(user: following_user)
         comment = { text: "text" }
-        album   = create(:album, user: following_user)
-        photo   = create(:photo, album: album)
 
         post :create, params: { album_id: album.id, photo_id: photo.id }, body: comment.to_json, as: :json, format: :json
 
@@ -90,9 +85,6 @@ RSpec.describe Api::CommentsController, type: :controller do
     end
     context "user not signed in" do
       it "need authorization" do
-        comment = { text: "text" }
-        album   = create(:album)
-        photo   = create(:photo, album: album)
         post :create, params: { album_id: album.id, photo_id: photo.id }, body: comment.to_json, format: :json
 
         is_expected.to respond_with(401)

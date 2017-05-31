@@ -11,7 +11,7 @@ module Api
     protected
 
     def set_current_user_to_scope
-      RequestStore.store[:current_user] ||= current_user
+      RequestStore.store[:current_user] = current_user
     end
   end
 end
