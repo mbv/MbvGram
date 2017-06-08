@@ -48,15 +48,16 @@ RSpec.describe Api::AlbumsController, type: :controller do
 
   end
   describe "#show" do
+    let(:user) { create(:user) }
+    let(:album) { create(:album, user: user) }
+
     context "user signed in" do
-      let(:user) { create(:user) }
       let(:another_user) { create(:user) }
       let(:following_user) do
         tmp_user = create(:user)
         user.following << tmp_user
         tmp_user
       end
-      let(:album) { create(:album, user: user) }
 
       before do
         login_user_with_token user
@@ -84,7 +85,6 @@ RSpec.describe Api::AlbumsController, type: :controller do
     end
     context "user not signed in" do
       it "need authorization" do
-        album = create(:album)
         get :show, params: { id: album }, format: :json
 
         is_expected.to respond_with(401)
@@ -123,10 +123,11 @@ RSpec.describe Api::AlbumsController, type: :controller do
   end
 
   describe "#update" do
+    let(:user) { create(:user) }
+    let(:album) { create(:album, user: user) }
+
     context "user signed in" do
-      let(:user) { create(:user) }
       let(:another_user) { create(:user) }
-      let(:album) { create(:album, user: user) }
 
       before do
         login_user_with_token user
@@ -154,8 +155,6 @@ RSpec.describe Api::AlbumsController, type: :controller do
 
     end
     context "user not signed in" do
-      let(:album) { create(:album) }
-
       it "need authorization" do
         album_hash = { title:       "album title",
                        description: "album description",
@@ -167,10 +166,11 @@ RSpec.describe Api::AlbumsController, type: :controller do
     end
   end
   describe "#destroy" do
+    let(:user) { create(:user) }
+    let(:album) { create(:album, user: user) }
+
     context "user signed in" do
-      let(:user) { create(:user) }
       let(:another_user) { create(:user) }
-      let(:album) { create(:album, user: user) }
 
       before do
         login_user_with_token user
