@@ -13,7 +13,7 @@ Rails.application.routes.draw do
           resources :comments, only: %i[index create update destroy]
         end
       end
-      resources :tags, except: %i[update show]
+      get "/tags", to: "tags#index"
 
       get "/photos/feed", to: "photos#feed"
       get "/photos/:id", to: "photos#show"
