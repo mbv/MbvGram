@@ -9,14 +9,13 @@ module ControllerMacros
     end
   end
 
-  def login_user
-    each do
-      @request.env["devise.mapping"] = Devise.mappings[:user]
-      user                           = FactoryGirl.create(:user)
-      user.confirm
-      sign_in user
-    end
+  def login_user(user)
+    user ||= create(:user)
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    user.confirm
+    sign_in user
   end
+
 
   def login_user_with_token(user)
     @request.env["devise.mapping"] = Devise.mappings[:user]
